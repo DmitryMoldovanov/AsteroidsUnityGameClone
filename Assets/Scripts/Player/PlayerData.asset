@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f598f82dc84843168085503268bef9e8, type: 3}
+  m_Name: PlayerData
+  m_EditorClassIdentifier: 
+  _prefab: {fileID: 4821977581452740031, guid: 258e383335f48874faa9b68a2f431855, type: 3}
+  _projectileAmount: 10
+  _startHealthPoints: 100
+  _playerMovement: {fileID: 0}
+  _playerThrustSpeed: 100
+  _playerTurnSpeed: 200
+  _joystick: {fileID: 0}
