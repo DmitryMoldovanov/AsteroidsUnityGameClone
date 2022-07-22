@@ -32,14 +32,12 @@ public class Player : MonoBehaviour, IUpdatable, IDamageable, IGameViewSubscriba
 
    private void OnEnable()
    {
-      _healthPoints.OnChanged += OnHealthChanged;
       _healthPoints.OnDied += OnPlayerDie;
       SubscribeToGameView(_gameplayView);
    }
 
    private void OnDisable()
    {
-      _healthPoints.OnChanged -= OnHealthChanged;
       _healthPoints.OnDied -= OnPlayerDie;
       UnSubscribeFromGameView(_gameplayView);
    }
@@ -62,11 +60,6 @@ public class Player : MonoBehaviour, IUpdatable, IDamageable, IGameViewSubscriba
    public void Shoot()
    {
       _weapon.Fire(_bulletPool.Pool.Get());
-   }
-
-   private void OnHealthChanged(int healthPoints)
-   {
-      Debug.Log($"PLAYER Got Hit! Health Points left: {healthPoints}");
    }
 
    private void OnPlayerDie()
