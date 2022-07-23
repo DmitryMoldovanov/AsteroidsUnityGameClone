@@ -10,7 +10,7 @@ public class LeaderboardView : View
     [SerializeField] private Color _lastBestScoreColor;
     [SerializeField] private GameObject _scoreRecordsParent;
 
-    private JsonDataSaver _dataSaver;
+    private IDataSaver _dataSaver;
     private LevelManager _levelManager;
     
     #region MONO
@@ -23,8 +23,8 @@ public class LeaderboardView : View
 
     private void Start()
     {
-        _dataSaver.InitDataSaver();
-        InitScoreRecords(_dataSaver.ScoreResultsArray);
+        //_dataSaver.InitDataSaver();
+        InitScoreRecords();
     }
 
     private void OnEnable()
@@ -41,23 +41,25 @@ public class LeaderboardView : View
     
     private async void OnMainMenuButtonClicked()
     {
-        _dataSaver.SaveToFile();
+        await _dataSaver.SaveCacheToFileAsync();
         
         gameObject.SetActive(false);
         await _levelManager.LoadSceneAsync(SceneNames.MainMenu.ToString());
     }
 
-    private void InitScoreRecords(ScoreResult[] scoreResults)
+    private async void InitScoreRecords()
     {
-        foreach (var scoreResult in scoreResults.Reverse())
+        await foreach (var scoreResult in _dataSaver.GetScoreResultsAsync())
         {
             ScoreRecord scoreRecord = Instantiate(_scoreRecordPrefab, _scoreRecordsParent.transform);
+            scoreRecord.transform.SetAsFirstSibling();
             scoreRecord.SetScore(_dataSaver.DeleteScoreRecord, scoreResult);
-            
-            if (scoreResult.Equals(scoreResults.Last()))
-            {
-                scoreRecord.SetScoreRecordColor(_lastBestScoreColor);
-            }
+        }
+
+        if (_scoreRecordsParent.transform.childCount > 0)
+        {
+            _scoreRecordsParent.transform.GetChild(0).TryGetComponent(out ScoreRecord firstScoreRecord);
+            firstScoreRecord.SetScoreRecordColor(_lastBestScoreColor);
         }
     }
     

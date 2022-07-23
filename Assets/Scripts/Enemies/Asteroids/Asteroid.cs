@@ -156,6 +156,7 @@ public class Asteroid : PooledObject<Asteroid>, IDamageable, IGameViewSubscribab
                 Asteroid asteroid = GetPool.Get();
                 
                 asteroid.SubscribeToGameView(_gameplayView);
+                asteroid.SetDependencies(_damageTextComposite);
                 asteroid.PrepareToFracture(position, _transform.rotation, newSize);
                 asteroid.SetTrajectory(Random.insideUnitSphere.normalized * _speed);
             }

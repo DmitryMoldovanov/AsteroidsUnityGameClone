@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using UnityEngine;
 
 public class GameContext : Singleton<GameContext>
@@ -13,9 +12,9 @@ public class GameContext : Singleton<GameContext>
     public PauseManager PauseManager { get; private set; }
     public UIManager UIManager { get; private set; }
     public ScoreResult ScoreResult { get; private set; }
-    public ScoreResult LastScoreResult => _jsonDataSaver.LastScoreResult;
+    public ScoreResult LastScoreResult => _dataSaver.LastScoreResult;
 
-    private JsonDataSaver _jsonDataSaver;
+    private IDataSaver _dataSaver;
     
     public override void Initialize()
     {
@@ -28,8 +27,8 @@ public class GameContext : Singleton<GameContext>
         PauseManager = new PauseManager();
         UIManager = new UIManager();
         
-        _jsonDataSaver = new JsonDataSaver();
-        _jsonDataSaver.InitDataSaver();
+        _dataSaver = new JsonDataSaver();
+        _dataSaver.InitDataSaver();
     }
 
     public void StartGame()
@@ -80,6 +79,6 @@ public class GameContext : Singleton<GameContext>
     {
         ScoreResult = scoreResult;
         
-        _jsonDataSaver.Save(scoreResult);
+        _dataSaver.Save(scoreResult);
     }
 }

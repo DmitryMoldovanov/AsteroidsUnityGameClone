@@ -26,4 +26,9 @@ public class ScoreResult
 
         IsDefault = true;
     }
+
+    public override string ToString()
+    {
+        return $"{AsteroidsKillCount} + {EnemiesKillCount} + {DateTime} + {TotalKillCount} + {IsDefault}";
+    }
 }
