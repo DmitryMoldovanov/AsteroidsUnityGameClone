@@ -23,7 +23,6 @@ public class Asteroid : PooledObject<Asteroid>, IDamageable, IGameViewSubscribab
     private SpriteRenderer _spriteRenderer;
     private Rigidbody2D _rigidbody;
     private Transform _transform;
-    private int _generation = 0;
     
     private HealthPoints _healthPoints;
     private DamageTextComposite _damageTextComposite;
@@ -64,15 +63,16 @@ public class Asteroid : PooledObject<Asteroid>, IDamageable, IGameViewSubscribab
     {
         _transform.position = position;
         _transform.rotation = rotation;
-        _transform.localScale = Vector3.one * GetRandomSize();
+        _size = HelperMethods.GetRandomSize(_minSize, _maxSize);
+        _transform.localScale = Vector3.one * _size;
     }
 
-    private void PrepareToFracture(Vector3 position, Quaternion rotation, float size)
+    public void PrepareToFracture(Vector3 position, Quaternion rotation, float size)
     {
         _transform.position = position;
         _transform.rotation = rotation;
         _size = size;
-        _transform.localScale = Vector3.one * _size;
+        _transform.localScale = Vector3.one * size;
     }
 
     public void SetTrajectory(Vector2 direction)
@@ -86,30 +86,16 @@ public class Asteroid : PooledObject<Asteroid>, IDamageable, IGameViewSubscribab
         _healthPoints.TakeDamage(damage);
     }
 
-    public void MoveToNextGeneration()
-    {
-        _generation++;
-        gameObject.name = string.Concat("generation №_", _generation.ToString());
-    }
-
     private void SetRandomSprite()
     {
         _spriteRenderer.sprite = _sprites[Random.Range(0, _sprites.Length)];
 
         _transform.eulerAngles = new Vector3(0.0f, 0.0f, Random.value * 360.0f);
-
-        _transform.localScale = Vector3.one * GetRandomSize();
-    }
-
-    private float GetRandomSize()
-    {
-        _size = Random.Range(_minSize, _maxSize);
-        return _size;
     }
 
     private void OnDied()
     {
-        FractureAsteroid(_fracturePeaces);
+        GetAsteroidFracturer().Fracture(_fracturePeaces);
         OnDiedEvent?.Invoke();
         UnSubscribeFromGameView(_gameplayView);
         ResetObject();
@@ -132,35 +118,23 @@ public class Asteroid : PooledObject<Asteroid>, IDamageable, IGameViewSubscribab
 
     private void OnTriggerExit2D(Collider2D col)
     {
-        if (IsAsteroidOutOfGameArea(col))
+        if (HelperMethods.IsObjectOutOfGameAre(col, gameObject))
         {
             ResetObject();
         }
     }
 
-    private bool IsAsteroidOutOfGameArea(Collider2D col)
+    private IFracturable GetAsteroidFracturer()
     {
-        return col.gameObject.layer == 9 && gameObject.activeSelf;
-    }
-
-    private void FractureAsteroid(int amountOfNewAsteroids)
-    {
-        if (_size * _fractureSizeBoundary >= _minSize)
-        {
-            Vector2 position = _transform.position;
-            position += Random.insideUnitCircle * _fractureSizeBoundary;
-            float newSize = _size * _fractureSizeBoundary;
-            
-            for (int i = 0; i < amountOfNewAsteroids; i++)
-            {
-                Asteroid asteroid = GetPool.Get();
-                
-                asteroid.SubscribeToGameView(_gameplayView);
-                asteroid.SetDependencies(_damageTextComposite);
-                asteroid.PrepareToFracture(position, _transform.rotation, newSize);
-                asteroid.SetTrajectory(Random.insideUnitSphere.normalized * _speed);
-            }
-        }
+        return new AsteroidFracturer(
+            Pool,
+            _transform,
+            _size,
+            _speed,
+            _fractureSizeBoundary,
+            _minSize,
+            _gameplayView,
+            _damageTextComposite);
     }
 
     public void SubscribeToGameView(GameplayView view)

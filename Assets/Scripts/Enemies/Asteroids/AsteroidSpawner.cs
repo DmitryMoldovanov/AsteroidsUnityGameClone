@@ -29,12 +29,12 @@ public class AsteroidSpawner : MonoBehaviour, IPauseHandler
     
     private void OnEnable()
     {
-        GameContext.Instance.PauseManager.Register(this);
+        GameContext.Instance.PauseHandler.Register(this);
     }
 
     private void OnDisable()
     {
-        GameContext.Instance.PauseManager.UnRegister(this);
+        GameContext.Instance.PauseHandler.UnRegister(this);
     }
 
     #endregion
