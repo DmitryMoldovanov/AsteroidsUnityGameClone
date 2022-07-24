@@ -14,7 +14,7 @@ public class EndGameView : View
     [SerializeField] private Button _mainMenuButton;
     [SerializeField] private Button _leaderboardButton;
     
-    private LevelManager _levelManager;
+    private LevelLoader _levelLoader;
     
     #region MONO
 
@@ -22,7 +22,7 @@ public class EndGameView : View
     {
         base.InitView(gameContext);
 
-        _levelManager = LevelManager.Instance;
+        _levelLoader = LevelLoader.Instance;
     }
 
     private void OnEnable()
@@ -46,19 +46,19 @@ public class EndGameView : View
     private async void OnReplayButtonClicked()
     {
         _gameContext.DisableUI(gameObject);
-        await _levelManager.LoadSceneAsync(SceneNames.GameplayMenu.ToString());
+        await _levelLoader.LoadSceneAsync(SceneNames.GameplayMenu.ToString());
     }
 
     private async void OnMainMenuButtonClicked()
     {
         _gameContext.DisableUI(gameObject);
-        await _levelManager.LoadSceneAsync(SceneNames.MainMenu.ToString());
+        await _levelLoader.LoadSceneAsync(SceneNames.MainMenu.ToString());
     }
 
     private async void OnLeaderboardButtonClicked()
     {
         _gameContext.DisableUI(gameObject);
-        await _levelManager.LoadSceneAsync(SceneNames.LeaderboardMenu.ToString());
+        await _levelLoader.LoadSceneAsync(SceneNames.LeaderboardMenu.ToString());
     }
 
     public void SetCurrentScore(ScoreResult scoreResult)

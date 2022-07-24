@@ -11,14 +11,14 @@ public class LeaderboardView : View
     [SerializeField] private GameObject _scoreRecordsParent;
 
     private IDataSaver _dataSaver;
-    private LevelManager _levelManager;
+    private LevelLoader _levelLoader;
     
     #region MONO
 
     private void Awake()
     {
         _dataSaver = new JsonDataSaver();
-        _levelManager = LevelManager.Instance;
+        _levelLoader = LevelLoader.Instance;
     }
 
     private void Start()
@@ -44,7 +44,7 @@ public class LeaderboardView : View
         await _dataSaver.SaveCacheToFileAsync();
         
         gameObject.SetActive(false);
-        await _levelManager.LoadSceneAsync(SceneNames.MainMenu.ToString());
+        await _levelLoader.LoadSceneAsync(SceneNames.MainMenu.ToString());
     }
 
     private async void InitScoreRecords()

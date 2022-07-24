@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class LevelManager : SingletonDontDestroy<LevelManager>
+public class LevelLoader : SingletonDontDestroy<LevelLoader>
 {
     [SerializeField] private GameObject _loadingScreenCanvas;
     [SerializeField] private Image _progressBar;

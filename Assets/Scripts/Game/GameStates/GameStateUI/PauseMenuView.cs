@@ -8,7 +8,7 @@ public class PauseMenuView : View
     [SerializeField] private Button _mainMenuButton;
     [SerializeField] private Button _leaderboardButton;
 
-    private LevelManager _levelManager;
+    private LevelLoader _levelLoader;
     
     #region MONO
 
@@ -16,7 +16,7 @@ public class PauseMenuView : View
     {
         base.InitView(gameContext);
 
-        _levelManager = LevelManager.Instance;
+        _levelLoader = LevelLoader.Instance;
     }
 
     private void OnEnable()
@@ -45,7 +45,7 @@ public class PauseMenuView : View
     private async void OnMainMenuButtonClicked()
     {
         _gameContext.DisableUI(gameObject);
-        await _levelManager.LoadSceneAsync(SceneNames.MainMenu.ToString());
+        await _levelLoader.LoadSceneAsync(SceneNames.MainMenu.ToString());
     }
 
     private void OnLeaderboardButtonClicked()

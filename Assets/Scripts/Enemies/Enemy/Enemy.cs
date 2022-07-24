@@ -97,7 +97,7 @@ public class Enemy : PooledObject<Enemy>, IDamageable, IGameViewSubscribable, IP
     {
         OnDiedAction?.Invoke();
         UnSubscribeFromGameView(_gameplayView);
-        GameContext.Instance.PauseManager.UnRegister(this);
+        GameContext.Instance.PauseHandler.UnRegister(this);
     }
     
     public void SubscribeToGameView(GameplayView view)
@@ -108,7 +108,7 @@ public class Enemy : PooledObject<Enemy>, IDamageable, IGameViewSubscribable, IP
         OnDiedAction += view.IncreaseEnemyKillScore;
         _gameplayView = view;
         
-        GameContext.Instance.PauseManager.Register(this);
+        GameContext.Instance.PauseHandler.Register(this);
     }
 
     public void UnSubscribeFromGameView(GameplayView view)

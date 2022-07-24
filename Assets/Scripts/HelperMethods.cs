@@ -26,4 +26,9 @@ public class HelperMethods
         
         return newDamage;
     }
+    
+    public static float GetRandomSize(float minSize, float maxSize)
+    {
+        return Random.Range(minSize, maxSize);
+    }
 }

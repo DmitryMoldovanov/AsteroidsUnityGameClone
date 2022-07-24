@@ -6,13 +6,13 @@ public class MainMenuView : View
     [SerializeField] private Button _startGameButton;
     [SerializeField] private Button _leaderboardButton;
 
-    private LevelManager _levelManager;
+    private LevelLoader _levelLoader;
     
     #region MONO
 
     private void Awake()
     {
-        _levelManager = LevelManager.Instance;
+        _levelLoader = LevelLoader.Instance;
     }
 
     private void OnEnable()
@@ -34,13 +34,13 @@ public class MainMenuView : View
     private async void OnStartGameButtonClicked()
     {
         gameObject.SetActive(false);
-        await _levelManager.LoadSceneAsync(SceneNames.GameplayMenu.ToString());
+        await _levelLoader.LoadSceneAsync(SceneNames.GameplayMenu.ToString());
     }
 
     private async void OnLeaderboardButtonClicked()
     {
         gameObject.SetActive(false);
-        await _levelManager.LoadSceneAsync(SceneNames.LeaderboardMenu.ToString());
+        await _levelLoader.LoadSceneAsync(SceneNames.LeaderboardMenu.ToString());
     }
 
     #endregion

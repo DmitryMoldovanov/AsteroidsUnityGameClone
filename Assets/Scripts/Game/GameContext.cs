@@ -9,7 +9,7 @@ public class GameContext : Singleton<GameContext>
     private Dictionary<GameStateName, GameState> _gameStatesDict;
 
     public GameStateMachine<GameState> GameStateMachine { get; private set; }
-    public PauseManager PauseManager { get; private set; }
+    public PauseHandler PauseHandler { get; private set; }
     public UIManager UIManager { get; private set; }
     public ScoreResult ScoreResult { get; private set; }
     public ScoreResult LastScoreResult => _dataSaver.LastScoreResult;
@@ -24,7 +24,7 @@ public class GameContext : Singleton<GameContext>
         InitGameStatesDict();
         
         GameStateMachine = new GameStateMachine<GameState>();       
-        PauseManager = new PauseManager();
+        PauseHandler = new PauseHandler();
         UIManager = new UIManager();
         
         _dataSaver = new JsonDataSaver();
@@ -46,11 +46,11 @@ public class GameContext : Singleton<GameContext>
     }
 
     public void PauseGame(){
-        PauseManager.SetPause(true);
+        PauseHandler.SetPause(true);
     }
 
     public void UnpauseGame(){
-        PauseManager.SetPause(false);
+        PauseHandler.SetPause(false);
     }
 
     public void EnableUI(GameObject ui){

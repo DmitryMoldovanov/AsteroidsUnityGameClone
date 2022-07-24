@@ -5,7 +5,7 @@ public abstract class PooledObject<T> : MonoBehaviour where T : class
 {
     private ObjectPool<T> _pool;
 
-    public ObjectPool<T> GetPool => _pool;
+    protected ObjectPool<T> Pool => _pool;
     
     public void SetPool(ObjectPool<T> pool) => _pool = pool;
 
